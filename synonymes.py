@@ -55,8 +55,23 @@ for hr in soupe.find_all('hr', style=True):
     
     tailles_barre.append(width)
     
+#####Vérifications
 assert len(tailles_barre) == len(synonymes)
 
+#modèle : <i class='titre'>18 synonymes</i>
+for i in soupe.find_all('i', class_='titre'):
+
+    #match_antonymes = re.search(r'(\d+) antonymes', i.contents[0])
+    match_synonymes = re.search(r'(\d+) synonymes', i.contents[0])
+
+    #if match_antonymes:
+    #    nbr_antonymes = int(match_antonymes.group(1))
+    #    print(nbr_antonymes)
+    if match_synonymes:
+        nbr_synonymes = int(match_synonymes.group(1))
+        #print(nbr_synonymes)
+
+assert nbr_synonymes == len(synonymes)
 
 #####Exportation csv
 
