@@ -62,7 +62,7 @@ assert len(tailles_barre) == len(synonymes)
 for i in soupe.find_all('i', class_='titre'):
 
     #match_antonymes = re.search(r'(\d+) antonymes', i.contents[0])
-    match_synonymes = re.search(r'(\d+) synonymes', i.contents[0])
+    match_synonymes = re.search(r'(\d+) synonymes', i.text)
 
     #if match_antonymes:
     #    nbr_antonymes = int(match_antonymes.group(1))
