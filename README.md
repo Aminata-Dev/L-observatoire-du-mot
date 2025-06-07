@@ -13,7 +13,7 @@ Prenons pour exemple le mot « seum ». Se trouve-t-il dans le dictionnaire ? Pe
 
 Notre objectif est de créer un programme Python permettant à l’utilisateur de saisir un mot, puis de générer un fichier Excel structuré, interactif et partageable. Ce fichier sera produit à l’aide de la librairie openpyxl. Voici la forme du ficher Excel que nous souhaitons produire :
 
-![Schéma](docs\schema_dashboard_observatoire_du_mot.png)
+![Schéma](docs/schema_dashboard_observatoire_du_mot.png)
 
 Cette maquette de **tableau de bord** est inférée de la liste suivante présentant les « dimensions » d’un mot que nous aimerions explorer et visualiser :
 
