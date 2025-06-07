@@ -2,15 +2,12 @@ import pandas as pd
 
 def recherche_twitter(mot):
     
-    df = pd.read_csv('data/french_tweets.csv') 
-    df = df[["text"]]
-    df["text"] = df["text"].str.lower()
-
+    df = pd.read_csv('data/french_tweets_mini.csv') 
     
     nbr_tweets = df.shape[0]
-    tweets_avec_mot = df[df["text"].str.contains(mot)]
+    tweets_avec_mot = df[df["text"].str.contains(mot.lower())]
     
-    print(tweets_avec_mot)
+    #print(tweets_avec_mot)
     frequence_mot = tweets_avec_mot.shape[0]
     
     #print(nbr_tweets, frequence_mot)
@@ -33,4 +30,6 @@ def recherche_twitter(mot):
 
     return score_popularite
 
-recherche_twitter("creativite")
+print(recherche_twitter("cree"))
+print(recherche_twitter("créé"))
+#test : recherche_twitter("creativite")
