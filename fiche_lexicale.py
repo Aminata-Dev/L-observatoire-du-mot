@@ -8,6 +8,7 @@ def recup_fiche_lexicale(mot):
     Prononciation, citations et traduction sur Wikitionary
     """
 
+    #CNRTL
     url = f"https://www.cnrtl.fr/definition/{mot}"
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -43,11 +44,12 @@ def recup_fiche_lexicale(mot):
     #modèle : <bdi lang="fr" class="lang-fr"><i>Le lendemain, ils ne se voyaient pas. Les couples restaient enfermés chez eux, à la diète, écœurés, abusant de cafés noirs et de cachets <b>effervescents</b>.</i></bdi>
     citations = []
     for bdi in soup.find_all("bdi", lang="fr", class_="lang-fr"):
-        try:
-            citation = bdi.find("i").text
-            print(citation)
-            citations.append(citation)
-        except:pass #si pas de citations
+        if bdi.get("about", "") != "#mwt10": #sinon prends des choses autres que des défintions dans la page
+            try:
+                citation = bdi.find("i").text
+                #print(citation)
+                citations.append(citation)
+            except:pass #si pas de citations
 
     # print("\nCitations :")
     # for c in citations:
