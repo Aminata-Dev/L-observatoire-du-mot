@@ -73,7 +73,3 @@ def recup_fiche_lexicale(mot):
         "prononciation":[prononciation]},
         "prononciation.csv"
     )
-    
-
-recup_fiche_lexicale("alambiqué")
-
