@@ -6,7 +6,7 @@ def posts_reddit_r_france(mot):
     url = "https://raw.githubusercontent.com/umbrae/reddit-top-2.5-million/master/data/france.csv"
     df = pd.read_csv(url)
     
-    df["annee"] = pd.to_datetime(df["created_utc"], utc=True, errors='coerce').dt.year #conversion objet temps puis extraction de l'année
+    df["annee"] = pd.to_datetime(df["created_utc"], unit="s", utc=True, errors='coerce').dt.year #conversion objet temps puis extraction de l'année
     
     #suppression des colonnes inutiles
     #df.columns

@@ -1,5 +1,6 @@
 import feedparser
 import pandas as pd
+import re
 
 def recup_articles(mot):
 
@@ -11,7 +12,11 @@ def recup_articles(mot):
         
         # Liste pour stocker les articles filtrés
         articles = []
-    
+
+        #pour barchart
+        match = re.search(r"https?://([^/]+)", url_flux)
+        journal = match.group(1) if match else url_flux
+            
         # Parcours des articles
         
         
@@ -24,7 +29,8 @@ def recup_articles(mot):
                     "titre": titre,
                     "date": entree.get("published", ""),
                     "description": description,
-                    "lien": entree.get("link", "")
+                    "lien": entree.get("link", ""),
+                    "journal":journal
                 })
     
         return pd.DataFrame(articles)
@@ -113,6 +119,6 @@ def recup_articles(mot):
         df_total["description"] = textes_propres
 
     #exportation
-    df_total.to_csv("data/actualite_avec_mot.csv")
-    
-    return df_total
+    df_total.to_csv("data/actualite_avec_mot.csv", index=False)
+    if df_total.empty:
+        return False

@@ -23,7 +23,7 @@ mot_entree = st.text_input("Quel mot souhaites-tu observer ?", "sable") #on capt
 #is_clicked = st.button("Click Me")
 
 
-st.write("Voici les données générées concernant le mot en entrée : ")
+st.write("Voici les données générées concernant le mot en entrée. Le tableau de bord Excel sera prêt à la fin du chargement indiqué en haut à gauche (Running)")
 
 #Dimension sémantique
 from synonymes import exportation_synonymes #synonymes et score de proximité
@@ -55,13 +55,16 @@ st.write(pd.read_csv("data/score_de_popularite.csv"))
 
 #Dimension médiatique
 from flux_rss import recup_articles
-recup_articles(mot_entree)
-st.write(pd.read_csv("data/actualite_avec_mot.csv"))
+if recup_articles(mot_entree): #la fonction retourne false en cas d'erreur
+    st.write(pd.read_csv("data/actualite_avec_mot.csv"))
 
-#Verbatim
+#execution génération fichier excel
+with open("main_excel.py", 'r', encoding='utf-8') as f:
+    code = f.read()
+    exec(code)
 
 #références
-st.link_button("Profile GitHub", url="https://github.com/Aminata-Dev")
+st.link_button("Lien GitHub", url="https://github.com/Aminata-Dev/L-observatoire-du-mot")
 
 # 🌙 Fond noir (mode sombre custom)
 st.markdown("""
