@@ -44,20 +44,22 @@ def recherche_wikidata_oeuvres_art(mot):
         headers = {"Accept": "application/sparql-results+json"}
         response = requests.get(url, params={"query": query}, headers=headers)
         if response.status_code != 200:
-            raise Exception(f"Erreur lors de la requête SPARQL : {response.status_code}")
+            print(f"Erreur lors de la requête SPARQL : {response.status_code}")
+            return False #Limit time exceeded
         return response.json()
     
     #lancement de la requête pour chaque type
     resultats = []
     for label, qid in types_oeuvres.items():
         json_data = requete_sparql_par_type(qid)
-        bindings = json_data["results"]["bindings"]
-        for res in bindings:
-            nbr_type = {
-                "type": res["typeLabel"]["value"],
-                "nombre": int(res["nbr"]["value"])
-            }
-            resultats.append(nbr_type)
+        if json_data: #False si pas de données trouvées
+            bindings = json_data["results"]["bindings"]
+            for res in bindings:
+                nbr_type = {
+                    "type": res["typeLabel"]["value"],
+                    "nombre": int(res["nbr"]["value"])
+                }
+                resultats.append(nbr_type)
     
     #et fusion des résultats dans un DataFrame
     df_resultats = pd.DataFrame(resultats)

@@ -8,10 +8,12 @@ def posts_reddit_r_france(mot):
     # Lire le fichier CSV directement depuis l'URL
     df = pd.read_csv(url)
     
-    df["annee"] = pd.to_datetime(df["created_utc"]).dt.year #conversion objet temps puis extraction de l'année
+        df["annee"] = pd.to_datetime(df["created_utc"], utc=True, errors='coerce').dt.year #conversion objet temps puis extraction de l'année
     
-    # Afficher les premières lignes du DataFrame
-    df.head()
+    #suppression des colonnes inutiles
+    #df.columns
+    df = df[['created_utc', 'id', 'title', 'ups', 'downs', 'permalink', 'selftext', 'annee']]
+
     
     #filtrer les lignes où 'selftext' ou 'title' contenant le mot
     reddit_posts_avec_mot = df[

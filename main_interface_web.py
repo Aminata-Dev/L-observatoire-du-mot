@@ -52,7 +52,19 @@ st.write(pd.read_csv("data/actualite_avec_mot.csv"))
 st.bar_chart()
 st.line_chart()
 
-#multi pages
+#références
+st.link_button("Profile GitHub", url="https://github.com/Aminata-Dev")
 
-#
-st.link_button("Profile", url="https://github.com/Aminata-Dev")
+# 🌙 Fond noir (mode sombre custom)
+st.markdown("""
+    <style>
+    .main {
+        background-color: #0e1117;
+        color: white;
+    }
+    input, textarea {
+        background-color: #262730;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
