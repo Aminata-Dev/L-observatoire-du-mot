@@ -15,30 +15,38 @@ mot_entree = st.text_input("Quel mot souhaites-tu observer ?", "sensible") #on c
 
 st.write("Voir les fichiers csv créés pendant que le Excel se génère : ")
 
-#synonymes et score de proximité
-from synonymes import exportation_synonymes
-exportation_synonymes(mot_entree)
-st.write(pd.read_csv("data/synonymes.csv").head())
+#Dimension sémantique
+
+from synonymes import exportation_synonymes #synonymes et score de proximité
+if exportation_synonymes(mot_entree): #la fonction retourne false en cas d'erreur
+    st.bar_chart(pd.read_csv("data/synonymes.csv"),
+             x="synonyme",
+             y="score_proximite_mot",
+            horizontal=True)
 
 from fiche_lexicale import recup_fiche_lexicale
 recup_fiche_lexicale(mot_entree)
-st.write(pd.read_csv("data/definitions.csv").head())
-st.write(pd.read_csv("data/prononciation.csv").head())
-st.write(pd.read_csv("data/etymologies.csv").head())
-st.write(pd.read_csv("data/citations.csv").head())
+st.write(pd.read_csv("data/definitions.csv"))
+st.write(pd.read_csv("data/prononciation.csv"))
+st.write(pd.read_csv("data/etymologies.csv"))
+st.write(pd.read_csv("data/citations.csv"))
 
-#from titres_oeuvres_art import rechercher_oeuvres_wikidata
-#rechercher_oeuvres_wikidata(mot_entree)
-#st.write(pd.read_csv("data/titres_oeuvres_art.csv").head())
+#Dimension culturelle
+from titres_oeuvres_art import recherche_wikidata_oeuvres_art
+recherche_wikidata_oeuvres_art(mot_entree)
+st.write(pd.read_csv("data/repartition_types_oeuvres_art.csv"))
 
-from twitter import recherche_twitter
-recherche_twitter(mot_entree)
+#Dimension sociale
+from score_de_popularite import calcul_score_de_popularite #cette fonction appelle twitter.py et reddit.py et crée les fichiers csv correspondant aux posts contenant le mot d'entrée
+calcul_score_de_popularite(mot_entree)
 st.write(pd.read_csv("data/tweets_avec_mot.csv").head())
-st.write(pd.read_csv("data/score_de_popularite.csv").head())
+st.write(pd.read_csv("data/reddit_posts_avec_mot.csv").head())
+st.write(pd.read_csv("data/score_de_popularite.csv"))
 
+#Dimension médiatique
 from flux_rss import recup_articles
 recup_articles(mot_entree)
-st.write(pd.read_csv("data/actualite_avec_mot.csv").head())
+st.write(pd.read_csv("data/actualite_avec_mot.csv"))
 
 #graphique ! https://docs.streamlit.io/develop/api-reference/charts
 st.bar_chart()

@@ -96,7 +96,16 @@ def recup_articles(mot):
     
         #fusion du df obtenu avec le df total (concaténation ligne par ligne)
         df_total = pd.concat([df_total, df_flux], ignore_index=True)
-    
+    from bs4 import BeautifulSoup
+
+    textes_propres = []
+    for description_html in df_total["description"].values:
+        soup = BeautifulSoup(description_html, "html.parser")
+        texte_propre = soup.text.strip()
+        textes_propres.append(texte_propre)
+
+    df_total["description"] = textes_propres
+        
     df_total.to_csv("data/actualite_avec_mot.csv")
     
     return df_total

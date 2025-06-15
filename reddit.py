@@ -1,35 +1,24 @@
-import praw
 import pandas as pd
 
+def posts_reddit_r_france(mot):
 
-import os
-from dotenv import load_dotenv
+    # URL du fichier CSV sur GitHub
+    url = "https://raw.githubusercontent.com/umbrae/reddit-top-2.5-million/master/data/france.csv"
+    
+    # Lire le fichier CSV directement depuis l'URL
+    df = pd.read_csv(url)
+    
+    df["annee"] = pd.to_datetime(df["created_utc"]).dt.year #conversion objet temps puis extraction de l'année
+    
+    # Afficher les premières lignes du DataFrame
+    df.head()
+    
+    #filtrer les lignes où 'selftext' ou 'title' contenant le mot
+    reddit_posts_avec_mot = df[
+        df['selftext'].dropna().str.contains(mot.lower(), na=False) |
+        df['title'].str.contains(mot.lower(), na=False)
+    ] #rq : selftext contient des navalues qui empêchent le calcul si ces lignes ne sont pas exclus de la recherche sur le contenu des posts
 
-load_dotenv()  # Charge les variables depuis .env
-
-#https://www.reddit.com/prefs/apps/
-reddit = praw.Reddit(
-    client_id=os.getenv("CLIENT_ID"),
-    client_secret=os.getenv("CLIENT_SECRET"),
-    user_agent=os.getenv("USER_AGENT")
-)
-
-#documentation : https://praw.readthedocs.io/en/stable/code_overview/models/subreddit.html
-
-#rechercher des posts Reddit contenant le mot
-mot = "créativité"
-submissions = reddit.subreddit("all").search(mot, sort="hot", limit=100) #voir image documentation
-
-#...et récupération des données dans un dataframe pandas
-donnees = []
-for post in submissions:
-    donnees.append({
-        "titre": post.title,
-        "texte": post.selftext,
-        "subreddit": post.subreddit.display_name,
-        "score": post.score,
-        "date": pd.to_datetime(post.created_utc, unit="s")
-    })
-
-df = pd.DataFrame(donnees)
-df.to_csv(f"data/reddit_top_posts_avec_mot.csv")
+    reddit_posts_avec_mot.to_csv(f"data/reddit_posts_avec_mot.csv")
+    
+    return reddit_posts_avec_mot
