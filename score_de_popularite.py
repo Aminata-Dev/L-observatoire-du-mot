@@ -12,7 +12,7 @@ def calcul_score_de_popularite(mot):
         *100
     )
     
-    print(f"Popularité du mot '{mot}' : {round(score_popularite_twitter, 2)} %")
+    print(f"Popularité du mot '{mot}' sur Twitter : {round(score_popularite_twitter, 2)} %")
     #exemple : Popularité du mot 'je' : 79.04 %
 
     #####################################
@@ -20,7 +20,13 @@ def calcul_score_de_popularite(mot):
     from reddit import posts_reddit_r_france
     reddit_posts_avec_mot = posts_reddit_r_france(mot)
 
-    score_popularite_reddit = round(reddit_posts_avec_mot["ups"].sum() / reddit_posts_avec_mot["downs"].sum(), 2)
+    ups_sum = reddit_posts_avec_mot["ups"].sum()
+    downs_sum = reddit_posts_avec_mot["downs"].sum()
+
+    if downs_sum != 0: score_popularite_reddit = ups_sum / downs_sum
+    else: score_popularite_reddit = 0.00
+
+    print(f"Popularité du mot '{mot}' sur Reddit : {round(score_popularite_reddit, 2)} %")
 
     #######################################
     from exportation_csv import exporter_donnees_csv

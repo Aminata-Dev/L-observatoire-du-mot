@@ -63,10 +63,13 @@ def recup_fiche_lexicale(mot):
 
     ##### Prononciation API
     #modèle prononciation : <span class="API" title="Prononciation API">\e.fɛʁ.ve.sɑ̃\</span></a>
-    prononciation = mot
-    for span in soup.find("span", class_="API",title="Prononciation API"): #le premier est le français, les autres concernent les traductions
-        #print(span)
-        prononciation = span.text
+    try:
+        for span in soup.find("span", class_="API",title="Prononciation API"): #le premier est le français, les autres concernent les traductions
+            #print(span)
+            prononciation = span.text
+    except: #pour les mots qui n'existent pas
+        prononciation=""
+    print("\nPrononciation : ", prononciation)
 
     exporter_donnees_csv(
         {"mot": [mot],

@@ -97,19 +97,20 @@ def recup_articles(mot):
         #fusion du df obtenu avec le df total (concaténation ligne par ligne)
         df_total = pd.concat([df_total, df_flux], ignore_index=True)
 
-    #conversion objet temps puis extraction de l'année
-    df_total["annee"] = pd.to_datetime(df_total["date"], errors='coerce', utc=True).dt.year
+    if not df_total.empty: #pour éviter les indexages de colonnes qui n'existent pas
+        #conversion objet temps puis extraction de l'année
+        df_total["annee"] = pd.to_datetime(df_total["date"], errors='coerce', utc=True).dt.year
+        
+        #suppression formattage balises html : nous souhaitons supprimer le formattage html grâce à bs4 pour la lisibilité et l'intégration au verbatim
+        from bs4 import BeautifulSoup
     
-    #suppression formattage balises html : nous souhaitons supprimer le formattage html grâce à bs4 pour la lisibilité et l'intégration au verbatim
-    from bs4 import BeautifulSoup
-
-    textes_propres = []
-    for description_html in df_total["description"].values:
-        soup = BeautifulSoup(description_html, "html.parser")
-        texte_propre = soup.text.strip()
-        textes_propres.append(texte_propre)
-    
-    df_total["description"] = textes_propres
+        textes_propres = []
+        for description_html in df_total["description"].values:
+            soup = BeautifulSoup(description_html, "html.parser")
+            texte_propre = soup.text.strip()
+            textes_propres.append(texte_propre)
+        
+        df_total["description"] = textes_propres
 
     #exportation
     df_total.to_csv("data/actualite_avec_mot.csv")
