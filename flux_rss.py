@@ -121,4 +121,6 @@ def recup_articles(mot):
     #exportation
     df_total.to_csv("data/actualite_avec_mot.csv", index=False)
     if df_total.empty:
+        df_total = pd.DataFrame(columns=['titre', 'date', 'description', 'lien', 'journal', 'annee'])
+        df_total.to_csv("data/actualite_avec_mot.csv", index=False)
         return False

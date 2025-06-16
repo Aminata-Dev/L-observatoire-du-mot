@@ -412,11 +412,18 @@ df_medias = pd.read_csv("data/actualite_avec_mot.csv")
 
 import random
 
+def choix_aleatoire(df, colonne):
+    if df.empty or colonne not in df.columns or df[colonne].dropna().empty:
+        return "Aucun résultat"
+    else:
+        return random.choice(df[colonne].dropna().values)
+
 df_verbatim = pd.DataFrame.from_dict({
-    "Twitter": [random.choice(df_tweets["tweets"].values)],
-    "Reddit": [random.choice(df_reddit["selftext"].values)],
-    "Médias": [random.choice(df_medias["description"].values)]
+    "Twitter": [choix_aleatoire(df_tweets, "tweets")],
+    "Reddit": [choix_aleatoire(df_reddit, "selftext")],
+    "Médias": [choix_aleatoire(df_medias, "description")]
 })
+
 
 df_verbatim
 
